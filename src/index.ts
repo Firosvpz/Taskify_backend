@@ -28,7 +28,7 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use(
   cors({
-    origin: ["https://taskify-frontend-jet.vercel.app/"],
+    origin: ["https://taskify-frontend-jet.vercel.app"],
     methods: "GET,PUT,POST,DELETE",
     credentials: true,
   }),
