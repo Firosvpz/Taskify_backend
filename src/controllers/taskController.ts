@@ -14,7 +14,9 @@ export const getTasks = async (req: AuthRequest, res: Response): Promise<void> =
     try {
         const userId = req.userId
         const tasks = await Task.find({ user: userId }).sort({ createdAt: -1 })
-        res.status(200).json( tasks)
+        const pendingTasks = await Task.find({user:userId},{status:"pending"}) 
+        const completedTasks = await Task.find({user:userId},{status:"completed"})
+        res.status(200).json({ tasks,pendingTasks,completedTasks })
     } catch (error) {
         res.status(500).json({ message: "internal server error" })
     }
@@ -22,9 +24,9 @@ export const getTasks = async (req: AuthRequest, res: Response): Promise<void> =
 
 export const createTasks = async (req: AuthRequest, res: Response): Promise<void> => {
     try {
-        
+        const { title } = req.body
         const tasks = new Task({
-            ...req.body,
+            title,
             user: req.userId
         })
         console.log('task', tasks);
@@ -39,46 +41,27 @@ export const createTasks = async (req: AuthRequest, res: Response): Promise<void
 export const updateTask = async (req: AuthRequest, res: Response): Promise<void> => {
     try {
         const id = req.params.id
-        const { title } = req.body
+        const { title, status } = req.body
 
-        const tasks= await Task.findByIdAndUpdate(id, title, { new: true })
-        console.log('updatedtask', tasks);
-        io.emit('taskUpdated', tasks)
+        const updatedTask = await Task.findByIdAndUpdate(id, { title, status }, { new: true })
+        console.log('updatedtask', updatedTask);
+        io.emit('taskUpdated',updatedTask)
         res.status(200).json({
             success: true,
-            tasks
+            updatedTask
         })
     } catch (error) {
         res.status(500).json({ message: "An error occured while updating task" })
     }
 }
 
-export const completeTask = async (req: AuthRequest, res: Response): Promise<void> => {
-  try {
-    const task = await Task.findOneAndUpdate(
-      { _id: req.params.id, userId:req.userId },
-      { status: 'completed' }, 
-      { new: true }
-    );
-
-    if (!task) {
-      return res.status(404).json({ message: 'Task not found' });
-    }
-
-    io.emit('taskCompleted', task); // Emit the event to all clients
-    res.json(task);
-  } catch (error) {
-    res.status(500).json({ message: 'Server error' });
-  }
-};
-
 export const deleteTask = async (req: AuthRequest, res: Response) => {
     try {
         const { id } = req.params
-        const tasks = await Task.findByIdAndDelete({_id:id,userId})
+        const deletedTask = await Task.findByIdAndDelete(id)
         console.log('deletedtask', deletedTask);
-        io.emit('taskDeleted',tasks._id)
-        res.status(200).json({success:true, message: "Task deleted successfullyyyy" })
+        io.emit('taskDeleted',deletedTask)
+        res.status(200).json({success:true, message: "Task deleted successfullyyyy" ,deletedTask})
     } catch (error) {
         res.status(500).json({ message: "An error occurred while deleting a task" })
     }

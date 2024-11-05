@@ -7,7 +7,7 @@ interface AuthRequest extends Request {
 
 const userAuth = async (req: AuthRequest, res: Response, next: NextFunction): Promise<any> => {
   
-   const token = req.header('x-auth-token');
+  let token = req.cookies.userToken;
   if (!token)
     return res
       .status(401)
