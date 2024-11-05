@@ -1,20 +1,16 @@
 import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
 
-declare global {
-  namespace Express {
-    interface Request {
-      userId?: string;
-    }
-  }
+interface AuthRequest extends Request {
+  userId?: string;
 }
 
-const userAuth = async (req: Request, res: Response, next: NextFunction) => {
-  const token = req.headers["authorization"]?.split(" ")[1];
-
+const userAuth = async (req: AuthRequest, res: Response, next: NextFunction): Promise<any> => {
+  
+  let token = req.cookies.userToken;
   if (!token)
     return res
-      .status(403)
+      .status(401)
       .json({ message: "Token required for authentication" });
   try {
     const decodedToken = jwt.verify(
