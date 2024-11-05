@@ -46,16 +46,10 @@ export const userLogin = async (req: Request, res: Response) => {
       { expiresIn: "1d" },
     );
 
-    res.cookie("userToken", token, {
-      expires: new Date(Date.now() + 24 * 60 * 60 * 1000),
-      httpOnly: true,
-      secure: true,
-      sameSite: "none",
-    });
 
     res
       .status(200)
-      .json({ success: true,token, message: "user logged successfully" });
+      .json({ success: true,token,user:{userId:user._id,username:user.username,email:user.email}, message: "user logged successfully" });
 
   } catch (error: any) {
     console.error("Error during login:", error.message || error);
