@@ -4,7 +4,7 @@ import http from 'http';
 const initializeSocket = (server: http.Server) => {
   const io = new SocketIOServer(server, {
     cors: {
-      origin: 'http://localhost:5173', // Ensure this matches your frontend URL
+      origin: 'https://taskify-frontend-jet.vercel.app/', // Ensure this matches your frontend URL
       methods: ["GET", "POST", "PUT", "DELETE"],
     },
   });
