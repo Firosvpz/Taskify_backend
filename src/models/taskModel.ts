@@ -3,6 +3,7 @@ import mongoose, { Schema, Document } from "mongoose";
 interface ITask extends Document {
   name: string;
   status: "pending" | "completed";
+  user: string | mongoose.Types.ObjectId;
 }
 
 const taskSchema: Schema = new Schema(
