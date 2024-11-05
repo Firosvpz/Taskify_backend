@@ -60,7 +60,7 @@ export const deleteTask = async (req: AuthRequest, res: Response) => {
         const { id } = req.params
         const deletedTask = await Task.findByIdAndDelete(id)
         console.log('deletedtask', deletedTask);
-        io.emit('taskDeleted',id)
+        io.emit('taskDeleted',deletedTask)
         res.status(200).json({success:true, message: "Task deleted successfullyyyy" ,deletedTask})
     } catch (error) {
         res.status(500).json({ message: "An error occurred while deleting a task" })
