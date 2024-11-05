@@ -55,12 +55,31 @@ export const updateTask = async (req: AuthRequest, res: Response): Promise<void>
     }
 }
 
+export const completeTask = async (req: AuthRequest, res: Response): Promise<void> => {
+    try {
+        const id = req.params.id
+      const task = await Task.findOneAndUpdate({_id:id},
+        { status: 'completed' }, 
+        { new: true }
+      );
+  
+      if (!task) {
+         res.status(404).json({ message: 'Task not found' });
+      }
+  
+      io.emit('taskCompleted', task); // Emit the event to all clients
+      res.json({success:true,task});   
+    } catch (error) {
+      res.status(500).json({ message: 'Server error' });
+    }
+  };
+
 export const deleteTask = async (req: AuthRequest, res: Response) => {
     try {
         const { id } = req.params
         const deletedTask = await Task.findByIdAndDelete(id)
         console.log('deletedtask', deletedTask);
-        io.emit('taskDeleted',deletedTask)
+        io.emit('taskDeleted',id)
         res.status(200).json({success:true, message: "Task deleted successfullyyyy" ,deletedTask})
     } catch (error) {
         res.status(500).json({ message: "An error occurred while deleting a task" })

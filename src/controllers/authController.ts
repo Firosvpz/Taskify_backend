@@ -46,13 +46,6 @@ export const userLogin = async (req: Request, res: Response) => {
       { expiresIn: "1d" },
     );
 
-    res.cookie("userToken", token, {
-      expires: new Date(Date.now() + 24 * 60 * 60 * 1000),
-      httpOnly: true,
-      secure: true,
-      sameSite: "none",
-    });
-
     res
       .status(200)
       .json({ success: true,token, message: "user logged successfully" });
@@ -66,10 +59,10 @@ export const userLogin = async (req: Request, res: Response) => {
 export const userLogout = (req: Request, res: Response) => {
   try {
     // Clear the cookie by setting the expiration date to a past time
-    res.cookie("userToken", "", {
-      httpOnly: true,
-      expires: new Date(0),
-    });
+    // res.cookie("userToken", "", {
+    //   httpOnly: true,
+    //   expires: new Date(0),
+    // });
 
     res.status(200).json({ success: true, message: "User logged out successfully" });
   } catch (error: any) {
