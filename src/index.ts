@@ -2,7 +2,7 @@ import express from "express";
 import http from 'http';
 import dotenv from "dotenv";
 import cors from "cors";
-import cookieParser from 'cookie-parser'
+// import cookieParser from 'cookie-parser'
 import { NextFunction, Request, Response } from "express";
 import connectDB from "./config/db";
 import router from "./routes/authRoutes";
@@ -22,14 +22,14 @@ const PORT = process.env.PORT || 3000;
 
 connectDB();
 
-app.use(cookieParser());
+// app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use(
   cors({
     origin: ["https://taskify-frontend-jet.vercel.app"],
-    methods: "GET,PUT,POST,DELETE",
+    methods: "GET,PUT,POST,PATCH,DELETE",
     credentials: true,
   }),
 );
