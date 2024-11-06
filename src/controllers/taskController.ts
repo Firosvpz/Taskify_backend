@@ -16,7 +16,7 @@ export const getTasks = async (req: AuthRequest, res: Response): Promise<void> =
         const tasks = await Task.find({ user: userId }).sort({ createdAt: -1 })
         // const pendingTasks = await Task.find({user:userId},{status:"pending"}) 
         // const completedTasks = await Task.find({user:userId},{status:"completed"})
-        console.log('tasks',tasks);
+        // console.log('tasks',tasks);
         // console.log('ptasks',pendingTasks);
         // console.log('ctasks',completedTasks);
         
@@ -33,7 +33,7 @@ export const createTasks = async (req: AuthRequest, res: Response): Promise<void
             title,
             user: req.userId
         })
-        console.log('task', tasks);
+        // console.log('task', tasks);
         await tasks.save()
         io.to(req.userId as string).emit('taskCreated',tasks)
         res.status(200).json({ success: true, tasks })
@@ -48,7 +48,7 @@ export const updateTask = async (req: AuthRequest, res: Response): Promise<void>
         const { title, status } = req.body
 
         const updatedTask = await Task.findByIdAndUpdate(id, { title, status }, { new: true })
-        console.log('updatedtask', updatedTask);
+        // console.log('updatedtask', updatedTask);
         io.to(req.userId as string).emit('taskUpdated',updatedTask)
         res.status(200).json({
             success: true,
@@ -82,7 +82,7 @@ export const deleteTask = async (req: AuthRequest, res: Response) => {
     try {
         const { id } = req.params
         const deletedTask = await Task.findByIdAndDelete(id)
-        console.log('deletedtask', deletedTask);
+        // console.log('deletedtask', deletedTask);
         io.to(req.userId as string).emit('taskDeleted',id)
         res.status(200).json({success:true, message: "Task deleted successfullyyyy" ,deletedTask})
     } catch (error) {
