@@ -43,5 +43,5 @@ app.use("/api/task", taskRouter);
 
 
 server.listen(PORT, () => {
-  console.log(`Database connected successfully on http://localhost:${PORT}`);
+  console.log(`Database connected successfully on https://taskify-frontend-xi.vercel.app`);
 });
