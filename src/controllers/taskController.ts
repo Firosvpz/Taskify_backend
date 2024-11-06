@@ -14,9 +14,13 @@ export const getTasks = async (req: AuthRequest, res: Response): Promise<void> =
     try {
         const userId = req.userId
         const tasks = await Task.find({ user: userId }).sort({ createdAt: -1 })
-        const pendingTasks = await Task.find({user:userId},{status:"pending"}) 
-        const completedTasks = await Task.find({user:userId},{status:"completed"})
-        res.status(200).json({ tasks,pendingTasks,completedTasks })
+        // const pendingTasks = await Task.find({user:userId},{status:"pending"}) 
+        // const completedTasks = await Task.find({user:userId},{status:"completed"})
+        console.log('tasks',tasks);
+        // console.log('ptasks',pendingTasks);
+        // console.log('ctasks',completedTasks);
+        
+        res.status(200).json({ tasks })
     } catch (error) {
         res.status(500).json({ message: "internal server error" })
     }

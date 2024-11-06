@@ -4,14 +4,13 @@ import http from 'http';
 const initializeSocket = (server: http.Server) => {
   const io = new SocketIOServer(server, {
     cors: {
-      origin: 'https://taskify-frontend-jet.vercel.app', 
+      origin: 'https://taskify-frontend-xi.vercel.app', 
       methods: ["GET", "POST", "PUT", "DELETE","PATCH"],
     },
   });
 
   io.on('connection', (socket) => {
     console.log('A user connected:', socket.id);
-
     
     // Handle disconnection
     socket.on('disconnect', () => {

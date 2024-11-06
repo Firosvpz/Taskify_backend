@@ -28,7 +28,7 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use(
   cors({
-    origin: ["https://taskify-frontend-jet.vercel.app"],
+    origin: ["https://taskify-frontend-xi.vercel.app"],
     methods: "GET,PUT,POST,PATCH,DELETE",
     credentials: true,
   }),
@@ -47,5 +47,5 @@ app.use("/api/task", taskRouter);
 
 
 server.listen(PORT, () => {
-  console.log(`Database connected successfully on http://localhost:${PORT}`);
+  console.log(`Database connected successfully on https://taskify-frontend-xi.vercel.app`);
 });
