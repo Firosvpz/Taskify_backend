@@ -13,11 +13,7 @@ const initializeSocket = (server: http.Server) => {
     console.log('A user connected:', socket.id);
 
 
-    socket.on('join',(userId:string)=>{
-        console.log(`User ${userId} joined the room`);
-        socket.join(userId)
-    })
-    
+  
     // Handle disconnection
     socket.on('disconnect', () => {
       console.log('User disconnected:', socket.id);
