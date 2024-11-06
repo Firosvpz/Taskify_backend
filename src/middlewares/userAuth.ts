@@ -10,8 +10,7 @@ const userAuth = async (req: AuthRequest, res: Response, next: NextFunction): Pr
   const authHeader = req.header('Authorization'); 
   const token = authHeader && authHeader.split(' ')[1]; 
   // console.log('token',token)
-  
-  
+
   if (!token)
     return res
       .status(401)
