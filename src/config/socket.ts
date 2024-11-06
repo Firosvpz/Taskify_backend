@@ -11,7 +11,6 @@ const initializeSocket = (server: http.Server) => {
 
   io.on('connection', (socket) => {
     console.log('A user connected:', socket.id);
-
     
     // Handle disconnection
     socket.on('disconnect', () => {
