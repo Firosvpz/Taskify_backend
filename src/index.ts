@@ -30,7 +30,6 @@ app.use(
   cors({
     origin: ["https://taskify-frontend-one.vercel.app"],
     methods: "GET,PUT,POST,PATCH,DELETE",
-    credentials: true,
   }),
 );
 
