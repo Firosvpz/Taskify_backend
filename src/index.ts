@@ -27,11 +27,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use(
-  cors({
-    origin: ["https://taskify-frontend-one.vercel.app"],
-    methods: "GET,PUT,POST,PATCH,DELETE",
-    credentials: true,
-  }),
+  cors(),
 );
 
 app.use((err: any, req: Request, res: Response, next: NextFunction) => {
