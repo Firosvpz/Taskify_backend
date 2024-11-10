@@ -1,5 +1,5 @@
 import express from "express";
-import http from 'http';
+import http from "http";
 import dotenv from "dotenv";
 import cors from "cors";
 // import cookieParser from 'cookie-parser'
@@ -10,13 +10,12 @@ import taskRouter from "./routes/taskRouter";
 import initializeSocket from "./config/socket";
 import { setSocketServerInstance } from "./controllers/taskController";
 
-
 dotenv.config();
 const app = express();
 const server = http.createServer(app);
 const io = initializeSocket(server);
 
-setSocketServerInstance(io)
+setSocketServerInstance(io);
 
 const PORT = process.env.PORT || 3000;
 
@@ -27,7 +26,10 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use(
-  cors(),
+  cors({
+    origin: "http://localhost:5173",
+    methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
+  }),
 );
 
 app.use((err: any, req: Request, res: Response, next: NextFunction) => {
@@ -40,8 +42,6 @@ app.use((err: any, req: Request, res: Response, next: NextFunction) => {
 app.use("/api/user", router);
 app.use("/api/task", taskRouter);
 
-
-
 server.listen(PORT, () => {
-  console.log(`Database connected successfully on https://taskify-frontend-one.vercel.app`);
+  console.log(`Database connected successfully on http://localhost:${PORT}`);
 });

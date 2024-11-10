@@ -5,10 +5,13 @@ interface AuthRequest extends Request {
   userId?: string;
 }
 
-const userAuth = async (req: AuthRequest, res: Response, next: NextFunction): Promise<any> => {
-  
-  const authHeader = req.header('Authorization'); 
-  const token = authHeader && authHeader.split(' ')[1]; 
+const userAuth = async (
+  req: AuthRequest,
+  res: Response,
+  next: NextFunction,
+): Promise<any> => {
+  const authHeader = req.header("Authorization");
+  const token = authHeader && authHeader.split(" ")[1];
   // console.log('token',token)
 
   if (!token)
@@ -21,8 +24,8 @@ const userAuth = async (req: AuthRequest, res: Response, next: NextFunction): Pr
       process.env.JWT_SECRET as string,
     ) as jwt.JwtPayload;
     req.userId = decodedToken.userId as string;
-    console.log('req.userId',req.userId);
-    
+    console.log("req.userId", req.userId);
+
     next();
   } catch (error) {
     return res.status(401).json({ message: "Invalid or expired token" });

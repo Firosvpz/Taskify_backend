@@ -19,7 +19,6 @@ export const userRegister = async (req: Request, res: Response) => {
     res
       .status(201)
       .json({ success: true, message: "User registered successfully" });
-
   } catch (error: any) {
     console.error("Error during registration:", error.message || error);
     res.status(500).json({ success: false, message: "Internal server error" });
@@ -48,25 +47,9 @@ export const userLogin = async (req: Request, res: Response) => {
 
     res
       .status(200)
-      .json({ success: true,token, message: "user logged successfully" });
-
+      .json({ success: true, token, message: "user logged successfully" });
   } catch (error: any) {
     console.error("Error during login:", error.message || error);
-    res.status(500).json({ message: "Internal server error" });
-  }
-};
-
-export const userLogout = (req: Request, res: Response) => {
-  try {
-    // Clear the cookie by setting the expiration date to a past time
-    // res.cookie("userToken", "", {
-    //   httpOnly: true,
-    //   expires: new Date(0),
-    // });
-
-    res.status(200).json({ success: true, message: "User logged out successfully" });
-  } catch (error: any) {
-    console.error("Error during logout:", error.message || error);
     res.status(500).json({ message: "Internal server error" });
   }
 };
