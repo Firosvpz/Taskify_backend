@@ -5,6 +5,7 @@ import {
   updateTask,
   deleteTask,
   completeTask,
+  serachTask
 } from "../controllers/taskController";
 import userAuth from "../middlewares/userAuth";
 
@@ -19,5 +20,7 @@ taskRouter.put("/update-task/:id", userAuth, updateTask);
 taskRouter.patch("/complete-task/:id", userAuth, completeTask);
 
 taskRouter.delete("/delete-task/:id", userAuth, deleteTask);
+
+taskRouter.get('/search',serachTask)
 
 export default taskRouter;

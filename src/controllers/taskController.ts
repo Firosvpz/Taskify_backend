@@ -17,11 +17,6 @@ export const getTasks = async (
   try {
     const userId = req.userId;
     const tasks = await Task.find({ user: userId }).sort({ createdAt: -1 });
-    // const pendingTasks = await Task.find({user:userId},{status:"pending"})
-    // const completedTasks = await Task.find({user:userId},{status:"completed"})
-    // console.log('tasks',tasks);
-    // console.log('ptasks',pendingTasks);
-    // console.log('ctasks',completedTasks);
 
     res.status(200).json({ tasks });
   } catch (error) {
@@ -41,7 +36,7 @@ export const createTasks = async (
     });
     // console.log('task', tasks);
     await tasks.save();
-    io.emit("taskCreated", tasks);
+    io.to(req.userId!).emit("taskCreated", tasks);
     res.status(200).json({ success: true, tasks });
   } catch (error) {
     res.status(500).json({ message: "Internal server error" });
@@ -62,7 +57,7 @@ export const updateTask = async (
       { new: true },
     );
     // console.log('updatedtask', updatedTask);
-    io.emit("taskUpdated", updatedTask);
+    io.to(req.userId!).emit("taskUpdated", updatedTask);
     res.status(200).json({
       success: true,
       updatedTask,
@@ -88,7 +83,7 @@ export const completeTask = async (
       res.status(404).json({ message: "Task not found" });
     }
 
-    io.emit("taskCompleted", task); // Emit the event to all clients
+    io.to(req.userId!).emit("taskCompleted", task); // Emit the event to all clients
     res.json({ success: true, task });
   } catch (error) {
     res.status(500).json({ message: "Server error" });
@@ -100,7 +95,7 @@ export const deleteTask = async (req: AuthRequest, res: Response) => {
     const { id } = req.params;
     const deletedTask = await Task.findByIdAndDelete(id);
     // console.log('deletedtask', deletedTask);
-    io.emit("taskDeleted", id);
+    io.to(req.userId!).emit("taskDeleted", id);
     res
       .status(200)
       .json({
@@ -114,3 +109,16 @@ export const deleteTask = async (req: AuthRequest, res: Response) => {
       .json({ message: "An error occurred while deleting a task" });
   }
 };
+
+export const serachTask = async (req:Request,res:Response)=>{
+  try {
+    const searchQuery = req.query.query as string;
+    const tasks = await Task.find({
+      title:{$regex:searchQuery,$options:'i'}
+    })
+    res.json({success:true,tasks})
+  } catch (error) {
+    console.error("Error searching tasks:", error);
+    res.status(500).json({ success: false, message: "Error searching tasks" });
+  }
+}
